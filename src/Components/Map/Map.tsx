@@ -1,5 +1,5 @@
 import {DateComponent} from "./DateComponent";
-import {TextComponent} from "./TextComponent";
+import TextComponent from "./TextComponent";
 
 import './Map.css';
 
