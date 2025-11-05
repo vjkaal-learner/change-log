@@ -3,7 +3,7 @@ import {TextComponent} from "./TextComponent";
 
 import './Map.css';
 
-interface MapProps {
+export interface MapProps {
     date: string;
     text: string;
 }

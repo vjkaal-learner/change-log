@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { TextComponent } from './TextComponent';
+import TextComponent from './TextComponent';
 
 describe('TextComponent', () => {
     test('renders the Text Component when text if provided', () => {

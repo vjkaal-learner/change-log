@@ -5,13 +5,15 @@ interface TextConstructor {
     text: string;
 }
 
-export const TextComponent = (props: TextConstructor) => {
+const TextComponent = (props: TextConstructor) => {
     return (
         <div
             data-testid={'TextComponent' + props.id}
             className='TextComponent'
+            title={props.text ?? ''}
         >
             {props.text ?? ''}
         </div>
     )
 }
+export default TextComponent
