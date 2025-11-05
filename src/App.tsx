@@ -1,24 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {Header} from "./Components/Header/Header";
+import {MapComponent} from "./Components/Map/Map";
 
 function App() {
+
+  const itemsList = [
+    { date: '2025-11-04', text: 'First log entry' },
+    { date: '2025-11-05', text: 'Second log entry' },
+  ];
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <MapComponent items={itemsList} />
     </div>
   );
 }
