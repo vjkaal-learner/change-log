@@ -1,0 +1,6 @@
+.TextComponent {
+    min-width: 60%;
+    max-width: 60%;
+    text-align: left;
+    padding: 1rem 0 1rem 0.5rem;
+}

@@ -1,3 +1,5 @@
+import './DateComponent.css'
+
 interface DateConstructor {
     id: number;
     date: string;
@@ -5,7 +7,10 @@ interface DateConstructor {
 
 export const DateComponent = (props: DateConstructor) => {
     return (
-        <div data-testid={'DateComponent-'+props.id}>
+        <div
+            data-testid={'DateComponent-'+props.id}
+            className='DateComponent'
+        >
             {props.date}
         </div>
     )
