@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
-import {useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router';
 import './App.css';
 import {Header} from "./Components/Header/Header";
 import {MapComponent, MapProps} from "./Components/Map/Map";
