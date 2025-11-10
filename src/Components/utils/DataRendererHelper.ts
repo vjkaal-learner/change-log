@@ -3,7 +3,7 @@ import {extractRepo, filterCommitData} from "./helper";
 import {STATIC_COMMIT_STRING, STATICURL, USER} from "./constants";
 import {MapProps} from "../Map/Map";
 
-const setRepoName = (
+const setRepoName = async (
   location: any,
   setRepo: React.Dispatch<React.SetStateAction<string>>,
 ) => {
@@ -14,29 +14,31 @@ const setRepoName = (
   }
   else {
     const url = `https://api.github.com/users/${USER}/repos`;
-    fetch(url, {
+    const response = await fetch(url, {
       headers: {
         Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`,
-      }})
-      .then(res => res.json())
-      .then(data => setRepo(data[0].name));
+      }
+    })
+    const result = await response.json();
+    setRepo(result[0]?.name);
   }
 }
 
-const setRepoData = (
+const setRepoData = async (
   repo: string,
   setCommitData: Dispatch<SetStateAction<MapProps[]>>
 ) => {
   if(repo) {
     // console.table(repo);
     const url = `${STATICURL}/${USER}/${repo}/${STATIC_COMMIT_STRING}`;
-    fetch(url, {
+    const response = await fetch(url, {
       headers: {
         Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`,
       },
-    })
-      .then(res => res.json())
-      .then(data => setCommitData(filterCommitData(data)));
+    });
+    const result = await response.json();
+    const filteredData = filterCommitData(result);
+    setCommitData(filteredData);
   }
 }
 

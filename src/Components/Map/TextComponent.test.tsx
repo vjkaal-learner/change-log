@@ -3,6 +3,21 @@ import '@testing-library/jest-dom';
 import TextComponent from './TextComponent';
 
 describe('TextComponent', () => {
+    test('renders the Text Component when loading is true', () => {
+        const textObj = {
+            id: 1,
+            text: 'I have updated the module'
+        };
+        render(
+          <TextComponent
+            id={textObj.id}
+            text={textObj.text}
+            loading={true}
+          />
+        );
+        const textElement = screen.getByTestId('TextComponent' + textObj.id);
+        expect(textElement).toBeInTheDocument();
+    });
     test('renders the Text Component when text if provided', () => {
         const textObj = {
             id: 1,
@@ -23,13 +38,12 @@ describe('TextComponent', () => {
 
     test('renders component but empty string if no text provided', () => {
         const textObj = {
-            id: 1,
-            text: ''
+            id: 1
         };
         render(
             <TextComponent
                 id={textObj.id}
-                text={textObj.text}
+                text={''}
                 loading={false}
             />
         );

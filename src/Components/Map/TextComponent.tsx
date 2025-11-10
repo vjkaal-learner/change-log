@@ -12,11 +12,11 @@ const TextComponent = (props: TextConstructor) => {
         <div
             data-testid={'TextComponent' + props.id}
             className='TextComponent'
-            title={props.text ?? ''}
+            title={props.text}
         >
             {props.loading ?
               <Skeleton variant={'text'} animation={'wave'}/>
-              : (props.text ?? '')}
+              : (props.text)}
         </div>
     )
 }

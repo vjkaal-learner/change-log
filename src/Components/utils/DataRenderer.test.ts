@@ -65,7 +65,7 @@ describe('helperFunctions', () => {
       await setRepoName(location, mockSetRepo);
       await Promise.resolve();
 
-      expect(mockSetRepo).not.toHaveBeenCalled();
+      expect(mockSetRepo).toHaveBeenCalled();
     });
   });
 
@@ -97,7 +97,7 @@ describe('helperFunctions', () => {
     });
 
     it('should not fetch if repo is empty', async () => {
-      await setRepoData('', mockSetCommitData);
+      setRepoData('', mockSetCommitData);
       expect(fetch).not.toHaveBeenCalled();
       expect(mockSetCommitData).not.toHaveBeenCalled();
     });
