@@ -1,8 +1,10 @@
+import Skeleton from "@mui/material/Skeleton";
 import './TextComponent.css'
 
 interface TextConstructor {
     id: number;
     text: string;
+    loading: boolean;
 }
 
 const TextComponent = (props: TextConstructor) => {
@@ -12,7 +14,9 @@ const TextComponent = (props: TextConstructor) => {
             className='TextComponent'
             title={props.text ?? ''}
         >
-            {props.text ?? ''}
+            {props.loading ?
+              <Skeleton variant={'text'} animation={'wave'}/>
+              : (props.text ?? '')}
         </div>
     )
 }

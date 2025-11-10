@@ -12,6 +12,7 @@ describe('TextComponent', () => {
             <TextComponent
                 id={textObj.id}
                 text={textObj.text}
+                loading={false}
             />
         );
         const textElement = screen.getByTestId('TextComponent' + textObj.id);
@@ -29,6 +30,7 @@ describe('TextComponent', () => {
             <TextComponent
                 id={textObj.id}
                 text={textObj.text}
+                loading={false}
             />
         );
         const textElement = screen.getByTestId('TextComponent' + textObj.id);

@@ -12,6 +12,7 @@ describe('DateComponent', () => {
             <DateComponent
                 id={dateObj.id}
                 date={dateObj.date}
+                loading={false}
             />
         );
         const dateElement = screen.getByTestId('DateComponent-' + dateObj.id);
@@ -29,6 +30,7 @@ describe('DateComponent', () => {
             <DateComponent
                 id={dateObj.id}
                 date={dateObj.date}
+                loading={false}
             />
         );
         const dateElement = screen.getByTestId('DateComponent-' + dateObj.id);
@@ -46,6 +48,7 @@ describe('DateComponent', () => {
             <DateComponent
                 id={dateObj.id}
                 date={dateObj.date}
+                loading={false}
             />
         );
         const dateElement = screen.getByTestId('DateComponent-' + dateObj.id);
@@ -63,6 +66,7 @@ describe('DateComponent', () => {
             <DateComponent
                 id={dateObj.id}
                 date={dateObj.date}
+                loading={false}
             />
         );
         const dateElement = screen.getByTestId('DateComponent-' + dateObj.id);

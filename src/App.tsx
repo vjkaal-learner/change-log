@@ -11,8 +11,10 @@ function App() {
 
   const [repo, setRepo] = React.useState<any>();
   const [commitData, setCommitData] = React.useState<any>([]);
+  const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
+    setLoading(true);
     setRepoName(location, setRepo);
   }, [location]);
 
@@ -21,14 +23,15 @@ function App() {
   }, [repo]);
 
   useEffect(() => {
-    setCommit(commitData, setItemsList);
+    setCommit(commitData, setItemsList, setLoading);
   }, [commitData]);
+  // console.log('loading ', loading);
 
   // TODO: Add skeleton for loading in Map Component
   return (
     <div className="App">
       <Header />
-      <MapComponent items={itemsList} />
+      <MapComponent items={itemsList} loading={loading} />
     </div>
   );
 }

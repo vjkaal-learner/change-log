@@ -10,9 +10,10 @@ export interface MapProps {
 
 interface MapComponentProps {
     items: MapProps[];
+    loading: boolean;
 }
 
-export const MapComponent = ({items}: MapComponentProps) => {
+export const MapComponent = ({items, loading}: MapComponentProps) => {
     return (
         <div data-testid="Map" className="Map">
             {items?.map((logEntry, idx: number) => (
@@ -21,9 +22,9 @@ export const MapComponent = ({items}: MapComponentProps) => {
                     className='MapItem'
                     key={idx}
                 >
-                    <DateComponent id={idx} date={logEntry.date} />
+                    <DateComponent id={idx} date={logEntry.date} loading={loading} />
                     <span className={'dot'}></span>
-                    <TextComponent id={idx} text={logEntry.text} />
+                    <TextComponent id={idx} text={logEntry.text}  loading={loading} />
                 </div>
             ))}
         </div>

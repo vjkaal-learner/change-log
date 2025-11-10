@@ -1,54 +1,61 @@
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import { MapComponent } from './Map';
+import { MapComponent, MapProps } from './Map';
 
-// ✅ Mock child components (since we're not testing them directly)
+// mock child components to avoid deep rendering
 jest.mock('./DateComponent', () => ({
-    DateComponent: ({ id, date }: { id: number; date: string }) => (
-        <div data-testid={`DateComponent-${id}`}>{date}</div>
+    DateComponent: ({ id, date, loading }: any) => (
+      <div data-testid={`DateComponent-${id}`}>
+          {loading ? 'Loading...' : date}
+      </div>
     ),
 }));
 
 jest.mock('./TextComponent', () => ({
-    TextComponent: ({ id, text }: { id: number; text: string }) => (
-        <div data-testid={`TextComponent-${id}`}>{text}</div>
+    __esModule: true,
+    default: ({ id, text, loading }: any) => (
+      <div data-testid={`TextComponent-${id}`}>
+          {loading ? 'Loading...' : text}
+      </div>
     ),
 }));
 
 describe('MapComponent', () => {
-    const mockItems = [
-        { date: '2025-11-04', text: 'First log entry' },
-        { date: '2025-11-05', text: 'Second log entry' },
+    const mockItems: MapProps[] = [
+        { date: '2025-11-01', text: 'Commit 1' },
+        { date: '2025-11-02', text: 'Commit 2' },
     ];
 
-    test('renders the Map container', () => {
-        render(<MapComponent items={mockItems} />);
-        const mapContainer = screen.getByTestId('Map');
-        expect(mapContainer).toBeInTheDocument();
+    it('renders without crashing', () => {
+        render(<MapComponent items={[]} loading={false} />);
+        expect(screen.getByTestId('Map')).toBeInTheDocument();
     });
 
-    test('renders correct number of MapItem entries', () => {
-        render(<MapComponent items={mockItems} />);
-        const mapItems = screen.getAllByTestId('MapItem');
-        expect(mapItems).toHaveLength(mockItems.length);
+    it('renders correct number of MapItem elements', () => {
+        render(<MapComponent items={mockItems} loading={false} />);
+        const items = screen.getAllByTestId('MapItem');
+        expect(items).toHaveLength(mockItems.length);
     });
 
-    test('renders DateComponent and TextComponent for each entry', () => {
-        render(<MapComponent items={mockItems} />);
-
-        mockItems.forEach((item, index) => {
-            const dateEl = screen.getByTestId(`DateComponent-${index}`);
-            const textEl = screen.getByTestId(`TextComponent-${index}`);
-
-            expect(dateEl).toHaveTextContent(item.date);
-            expect(textEl).toHaveTextContent(item.text);
+    it('renders DateComponent and TextComponent for each item', () => {
+        render(<MapComponent items={mockItems} loading={false} />);
+        mockItems.forEach((_, idx) => {
+            expect(screen.getByTestId(`DateComponent-${idx}`)).toBeInTheDocument();
+            expect(screen.getByTestId(`TextComponent-${idx}`)).toBeInTheDocument();
         });
     });
 
-    test('renders nothing when items array is empty', () => {
-        render(<MapComponent items={[]} />);
-        const mapContainer = screen.getByTestId('Map');
-        expect(screen.queryAllByTestId('MapItem')).toHaveLength(0);
-        expect(mapContainer).toBeEmptyDOMElement();
+    it('passes correct text and date values to child components', () => {
+        render(<MapComponent items={mockItems} loading={false} />);
+        expect(screen.getByText('2025-11-01')).toBeInTheDocument();
+        expect(screen.getByText('Commit 1')).toBeInTheDocument();
+        expect(screen.getByText('2025-11-02')).toBeInTheDocument();
+        expect(screen.getByText('Commit 2')).toBeInTheDocument();
+    });
+
+    it('displays "Loading..." text in child components when loading=true', () => {
+        render(<MapComponent items={mockItems} loading={true} />);
+        const loadingTexts = screen.getAllByText('Loading...');
+        // each MapItem has both a DateComponent and TextComponent, so total = items.length * 2
+        expect(loadingTexts).toHaveLength(mockItems.length * 2);
     });
 });
