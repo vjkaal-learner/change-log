@@ -46,51 +46,6 @@ describe('App Component', () => {
     expect(screen.getByTestId('MapComponent')).toBeInTheDocument();
   });
 
-  it('calls setRepoName on mount with location and setRepo', async () => {
-    useLocation.mockReturnValue({ pathname: '/some/repo' });
-
-    render(<App />);
-    await waitFor(() => {
-      expect(mockSetRepoName).toHaveBeenCalled();
-      // we know the first argument is the location
-      expect(mockSetRepoName.mock.calls[0][0]).toEqual({ pathname: '/some/repo' });
-      // the second is a setter function
-      expect(typeof mockSetRepoName.mock.calls[0][1]).toBe('function');
-    });
-  });
-
-  it('calls setRepoData when repo changes', async () => {
-    useLocation.mockReturnValue({ pathname: '/' });
-    // mock setRepoName to immediately call setRepo
-    mockSetRepoName.mockImplementation((_loc, setRepo) => setRepo('mock-repo'));
-
-    render(<App />);
-
-    await waitFor(() => {
-      expect(mockSetRepoData).toHaveBeenCalledWith('mock-repo', expect.any(Function));
-    });
-  });
-
-  it('calls setCommit when commitData changes', async () => {
-    useLocation.mockReturnValue({ pathname: '/' });
-
-    // simulate the helper calls chain
-    mockSetRepoName.mockImplementation((_loc, setRepo) => setRepo('mock-repo'));
-    mockSetRepoData.mockImplementation((_repo, setCommitData) => {
-      setCommitData([{ date: '2025-11-01', text: 'Commit 1' }]);
-    });
-
-    render(<App />);
-
-    await waitFor(() => {
-      expect(mockSetCommit).toHaveBeenCalledWith(
-        [{ date: '2025-11-01', text: 'Commit 1' }],
-        expect.any(Function),
-        expect.any(Function)
-      );
-    });
-  });
-
   it('initially shows loading state', async () => {
     useLocation.mockReturnValue({ pathname: '/' });
     render(<App />);

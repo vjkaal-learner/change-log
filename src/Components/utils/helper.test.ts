@@ -1,9 +1,15 @@
-import { filterCommitData, extractRepo } from './helper';
+import { filterCommitData, extractRepo, getMessageValue, getDateValue } from './helper';
 import { MapProps } from '../Map/Map';
+
+import * as alert from "./alert";
+import {showAlert} from "./alert";
 
 describe('helper utilities', () => {
   // ---------------- filterCommitData ----------------
   describe('filterCommitData', () => {
+
+    const showAlert = jest.spyOn(alert, 'showAlert');
+
     it('should return an empty array if commitData is falsy', () => {
       expect(filterCommitData(null as any)).toEqual([]);
       expect(filterCommitData(undefined as any)).toEqual([]);
@@ -55,7 +61,8 @@ describe('helper utilities', () => {
         {},
         null,
       ];
-      expect(() => filterCommitData(mockCommitData as any)).not.toThrow();
+      filterCommitData(mockCommitData);
+      expect(showAlert).toHaveBeenCalled();
     });
   });
 
@@ -75,6 +82,72 @@ describe('helper utilities', () => {
       const pathname = '/vanshaj//awesome-repo/';
       const result = extractRepo(pathname);
       expect(result).toBe('awesome-repo');
+    });
+  });
+
+  describe('getMessageValue', () => {
+
+    const showAlert = jest.spyOn(alert, 'showAlert');
+
+    it('should return the commit message when present', () => {
+      const item = {
+        commit: {
+          message: "Initial commit"
+        }
+      };
+
+      const result = getMessageValue(item);
+      expect(result).toBe("Initial commit");
+    });
+
+    it('should throw an error when commit or message is missing', () => {
+      const item = { commit: { message: ''} };
+      const result = getMessageValue(item);
+
+      expect(result).toBe('');
+      expect(showAlert).toHaveBeenCalledWith("Could not find commit or its message", "error");
+    });
+
+    it('should throw an error when item is undefined', () => {
+      const result = getMessageValue(undefined as any);
+
+      expect(result).toBe('');
+      expect(showAlert).toHaveBeenCalledWith("Could not find commit or its message", "error");
+    });
+  });
+
+  describe('getDateValue', () => {
+
+    const showAlert = jest.spyOn(alert, 'showAlert');
+
+    it('should return the formatted commit date when present', () => {
+      const dateString = '2024-05-17T12:34:56Z';
+      const item = {
+        commit: {
+          committer: { date: dateString }
+        }
+      };
+
+      const result = getDateValue(item);
+
+      // we can't hardcode date since toLocaleDateString() depends on system locale
+      // but we can check that it's a string and includes the year
+      expect(result).toContain('2024');
+    });
+
+    it('should throw an error when committer or date is missing', () => {
+      const item = { commit: { committer: { date: ''} } };
+      const result = getDateValue(item);
+
+      expect(result).toBe('');
+      expect(showAlert).toHaveBeenCalledWith("Could not find commit or its date", "error");
+    });
+
+    it('should throw an error when item is undefined', () => {
+      const result = getDateValue(undefined as any);
+
+      expect(result).toBe('');
+      expect(showAlert).toHaveBeenCalledWith("Could not find commit or its date", "error");
     });
   });
 });
